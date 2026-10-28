@@ -7,6 +7,7 @@ import { parseLocalArgs, prepareLocalSidebars } from './lib/local';
 //   --build  production build of only the working copies (used by validate-app-docs)
 async function main() {
   const argv = process.argv.slice(2);
+  if (argv[0] === '--') argv.shift(); // `pnpm dev:local -- app=path`
   const build = argv.includes('--build');
   const dash = argv.indexOf('--');
   const passthrough = dash >= 0 ? argv.slice(dash + 1) : [];

@@ -1,0 +1,79 @@
+name: Validate app docs
+
+# Called from an app repository: builds only that app's working copy against the current
+# portal (production build, broken links fail it).
+on:
+  workflow_call:
+    inputs:
+      app-id:
+        description: App id as configured in docs-sources.json
+        required: true
+        type: string
+      docs-path:
+        description: Docs folder inside the app repository
+        required: true
+        type: string
+      central-repo:
+        description: Portal repository (owner/name)
+        required: false
+        type: string
+        default: RocketPadPlatforms/docs
+      central-ref:
+        description: Branch or tag of the portal repository to validate against
+        required: false
+        type: string
+        default: main
+    secrets:
+      central-token:
+        description: Only needed when the portal repository is private
+        required: false
+
+permissions: {}
+
+jobs:
+  validate:
+    runs-on: [self-hosted, linux, x64]
+    permissions:
+      contents: read
+    # github.workflow is the caller's workflow, so it is not unique on its own
+    concurrency:
+      group: validate-docs-${{ github.repository }}-${{ github.ref }}-${{ inputs.app-id }}
+      cancel-in-progress: true
+    steps:
+      - name: Check inputs
+        env:
+          APP_ID: ${{ inputs.app-id }}
+          DOCS_PATH: ${{ inputs.docs-path }}
+        run: |
+          [[ "$APP_ID" =~ ^[a-z0-9-]+$ ]] || { echo "::error::app-id must be lowercase letters, digits and -"; exit 1; }
+          case "$DOCS_PATH" in /*|*..*) echo "::error::docs-path must be a relative path inside the repository"; exit 1;; esac
+      # The github context is the caller's, so the portal is checked out explicitly.
+      - name: Check out the portal
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: ${{ inputs.central-repo }}
+          ref: ${{ inputs.central-ref }}
+          token: ${{ secrets.central-token || github.token }}
+          path: central
+          persist-credentials: false
+      - name: Check out the app
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: app
+          persist-credentials: false
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          package_json_file: central/package.json
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: central/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+        working-directory: central
+      - name: Build the working copy only
+        working-directory: central
+        env:
+          APP_ID: ${{ inputs.app-id }}
+          DOCS_PATH: ${{ inputs.docs-path }}
+        run: pnpm dev:local --build "$APP_ID=../app/$DOCS_PATH"

@@ -360,6 +360,44 @@ describe('7. a moved tag keeps the locked commit, a new tag only adds (6)', () =
   });
 });
 
+describe('validate-app-docs flow: a working copy in local mode', () => {
+  it('builds only the working copy, and a broken link in it fails the build', async () => {
+    const site = await makeSite('site-v', [app('app-a')]);
+    const wc = join(work, 'app-a-working-copy');
+    for (const [path, content] of Object.entries(appAFiles('0.2.0'))) {
+      mkdirSync(join(wc, path, '..'), { recursive: true });
+      writeFileSync(join(wc, path), content);
+    }
+    const args = ['scripts/dev-local.ts', '--build', `app-a=${join(wc, 'docs')}`];
+
+    // no sync, fetch or prepare: released versions are not needed
+    const ok = await step(site, 'tsx', args);
+    expect(ok.code, ok.out).toBe(0);
+    const html = read(site, 'build/app-a/index.html');
+    expect(html).toContain('Start page of 0.2.0');
+    expect(html).toMatch(/name="?robots"? content="noindex, nofollow"/);
+    expect(existsSync(join(site, 'build/app-a/local'))).toBe(false); // served at the app root
+
+    writeFileSync(
+      join(wc, 'docs/guide.md'),
+      '---\nid: guide\n---\n\n# Guide\n\n[gone](./missing.md)\n',
+    );
+    const broken = await step(site, 'tsx', args);
+    expect(broken.code).not.toBe(0);
+    expect(broken.out).toMatch(/Broken Markdown link "\.\/missing\.md"/);
+  });
+
+  it('refuses LOCAL_DOCS and DOCS_ONLY in a deploy build', async () => {
+    const site = join(work, 'site-v');
+    const r = await build(site, 'build-deploy', {
+      DOCS_DEPLOY: 'true',
+      DOCS_ONLY: 'app-a@current',
+    });
+    expect(r.code).not.toBe(0);
+    expect(r.out).toMatch(/must not be set for a deploy build/);
+  });
+});
+
 it('repo root is what the copy was made from', () => {
   expect(existsSync(join(REPO, 'docusaurus.config.ts'))).toBe(true);
 });

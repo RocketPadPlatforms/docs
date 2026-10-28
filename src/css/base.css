@@ -1,0 +1,106 @@
+/**
+ * Element-level typography, rhythm and global behavior.
+ * Everything here consumes tokens from tokens.css; no raw brand hex.
+ */
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/**
+ * STACKING CONTRACT (see src/components/Sky/styles.module.css).
+ * The ambient sky sits at z-index:-1, which only works while no ancestor of it
+ * creates a stacking context. Do NOT add transform / filter / backdrop-filter /
+ * perspective / contain:paint|layout / will-change / isolation / mix-blend-mode
+ * / opacity<1 to html, body or #__docusaurus. And leave the page background on
+ * `html`, where Infima puts it — an opaque `body` background would paint over
+ * the sky.
+ */
+
+/* ------------------------------------------------------------- headings */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--rpp-font-heading);
+  letter-spacing: 0.01em;
+}
+
+h1 {
+  line-height: 1.06;
+  letter-spacing: 0.02em;
+}
+
+/* Josefin Sans has a small x-height and is a display face: it is excellent at
+   h1/h2 and gets hard to read at small sizes. Below h3 we fall back to the
+   body face, which is what the marketing site does too. */
+h4,
+h5,
+h6 {
+  font-family: var(--rpp-font-body);
+  letter-spacing: 0;
+}
+
+.markdown {
+  --ifm-h1-vertical-rhythm-top: 3;
+  --ifm-h2-vertical-rhythm-top: 3.5;
+  --ifm-h3-vertical-rhythm-top: 2;
+  --ifm-heading-vertical-rhythm-top: 1.25;
+  --ifm-h1-vertical-rhythm-bottom: 1.25;
+}
+
+/* A hairline above each h2 gives long pages a visible spine. */
+.markdown > h2 {
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--rpp-line);
+}
+
+/* ---------------------------------------------------------------- links */
+
+.markdown a {
+  font-weight: 500;
+}
+
+/* Coral ↗ on outbound links, as on rpp.gmbh. Excludes anything that is
+   styled as a card or button, where the arrow would be noise. */
+.markdown a[href^="http"]:not([class*="card"]):not([class*="button"])::after {
+  content: "↗";
+  display: inline-block;
+  margin-left: 0.15em;
+  color: var(--rpp-accent-text);
+  font-size: 0.8em;
+  text-decoration: none;
+}
+
+/* ---------------------------------------------------------------- lists */
+
+.markdown ul > li::marker {
+  color: var(--rpp-decor);
+}
+
+/* ---------------------------------------------------------------- focus */
+
+/* Infima ships almost no focus styling. :focus-visible only matches keyboard
+   focus, so this never fires on mouse clicks. */
+:where(a, button, summary, input, select, textarea):focus-visible {
+  outline: 2px solid var(--rpp-decor);
+  outline-offset: 2px;
+  border-radius: var(--rpp-radius-sm);
+}
+
+/* --------------------------------------------------------------- motion */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

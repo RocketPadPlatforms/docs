@@ -31,7 +31,10 @@ export async function readSidebars(file: string): Promise<unknown> {
   if (extname(file) === '.json') return JSON.parse(readFileSync(file, 'utf8'));
   if (!CODE_EXT.has(extname(file))) throw new Error(`unsupported sidebar file type: ${file}`);
   // the file sits under the site directory, so its requires resolve to the site's node_modules
-  const jiti = createJiti(import.meta.url, { interopDefault: true, moduleCache: false });
+  const jiti = createJiti(join(process.cwd(), 'noop.js'), {
+    interopDefault: true,
+    moduleCache: false,
+  });
   return jiti.import(file, { default: true });
 }
 

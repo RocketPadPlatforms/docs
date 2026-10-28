@@ -1,0 +1,364 @@
+/**
+ * Brand tokens + Infima mapping.
+ *
+ * Mirrors https://rpp.gmbh/assets/css/cosmos.css so the docs and the marketing
+ * site stay greppable against each other. Three layers:
+ *
+ *   L1  brand constants        mode-independent, German names as on rpp.gmbh
+ *   L2  semantic roles         the ONLY layer that differs between modes
+ *   L3  Infima (--ifm-*)       always derived from L1/L2
+ *
+ * No raw hex below L2, except the two primary ramps: Infima ramp shades have
+ * to be literal values.
+ *
+ * CONTRAST RULE — the reason there are two primary ramps.
+ * The brand teal #77c6c0 is 10.19:1 on the dark ground but only 1.98:1 on
+ * white and 1.72:1 on #efefef. It CANNOT carry text or links in light mode.
+ * So --rpp-primary (text-safe) and --rpp-decor (decorative only) are separate
+ * tokens, and light mode deepens the former to #2a6e68.
+ */
+
+:root {
+  /* ---------------------------------------------------- L1 brand constants */
+  --rpp-universum: #0d304f; /* deep navy  */
+  --rpp-universum-rgb: 13, 48, 79;
+  --rpp-zuendung: #e8736d; /* coral accent */
+  --rpp-zuendung-rgb: 232, 115, 109;
+  --rpp-rakete: #efefef; /* off-white  */
+  --rpp-rakete-rgb: 239, 239, 239;
+  --rpp-hue: #77c6c0; /* teal — the brand color */
+  --rpp-hue-rgb: 119, 198, 192;
+  --rpp-platform: #b5c2d3; /* muted blue-grey */
+  --rpp-platform-rgb: 181, 194, 211;
+
+  /* the dark "space" surface (cosmos .cm-root scope) */
+  --rpp-space: #030712;
+  --rpp-space-raised: #060b19;
+  --rpp-t1: #eaf1fb;
+  --rpp-t2: #9fb0cc;
+  --rpp-t3: #7d8fb5;
+
+  /* L1b — accessibility derivations, not present on the marketing site.
+     Ratios measured against #ffffff unless noted. */
+  --rpp-hue-deep: #2a6e68; /* 5.95:1 white · 5.61:1 #f7f9fb · 5.18:1 #efefef */
+  --rpp-hue-hover: #5dada7; /* = cosmos --color-link-hover */
+  --rpp-zuendung-deep: #ce2920; /* 5.30:1 — coral that may carry text */
+  --rpp-info: #2077c5; /* 4.66:1 — navy hue raised to L .45 */
+
+  /* L1c — shape, motion, type (identical to cosmos.css) */
+  --rpp-radius-sm: 0.25rem;
+  --rpp-radius-md: 0.5rem;
+  --rpp-radius-lg: 0.75rem;
+  --rpp-radius-xl: 1rem;
+  --rpp-radius-2xl: 1.5rem;
+  --rpp-radius-full: 9999px;
+  --rpp-shadow-md: 0 4px 6px rgba(var(--rpp-universum-rgb), 0.08);
+  --rpp-shadow-lg: 0 10px 20px rgba(var(--rpp-universum-rgb), 0.1);
+  --rpp-shadow-xl: 0 20px 40px rgba(var(--rpp-universum-rgb), 0.12);
+  --rpp-letter-caps: 0.15em;
+  --rpp-letter-kick: 0.14em;
+  --rpp-container: 1240px;
+  --rpp-pad: clamp(20px, 5vw, 64px);
+
+  --rpp-font-heading: "Josefin Sans", "Helvetica Neue", Arial, sans-serif;
+  --rpp-font-body: "Open Sans", "Helvetica Neue", Arial, sans-serif;
+  --rpp-font-mono: "JetBrains Mono", "Fira Code", Consolas, monospace;
+
+  /* ------------------------------------------------ L2 semantic — LIGHT */
+  color-scheme: light;
+
+  --rpp-bg: #ffffff;
+  --rpp-surface: #f7f9fb;
+  --rpp-surface-2: var(--rpp-rakete);
+  --rpp-glass: rgba(var(--rpp-universum-rgb), 0.035);
+  --rpp-glass-strong: rgba(var(--rpp-universum-rgb), 0.06);
+  --rpp-line: rgba(var(--rpp-universum-rgb), 0.12);
+  --rpp-line-solid: #d7dee7;
+  --rpp-text: var(--rpp-universum);
+  --rpp-text-2: #4f637d; /* 6.15:1 */
+  --rpp-text-3: #6f8099; /* 4.02:1 — decorative only, never body */
+  --rpp-primary: var(--rpp-hue-deep);
+  --rpp-decor: var(--rpp-hue); /* borders, glows, icon strokes — never text */
+  --rpp-accent: var(--rpp-zuendung);
+  --rpp-accent-text: var(--rpp-zuendung-deep);
+  --rpp-card-bg: rgba(255, 255, 255, 0.72);
+  --rpp-glow: 0 6px 20px rgba(42, 110, 104, 0.28);
+
+  /* ------------------------------------------------------ L3 Infima — LIGHT */
+  /* Real teal ramp. The previous one set light/lighter/lightest to coral,
+     which is why every hover and active state used to flash salmon. */
+  --ifm-color-primary: #2a6e68;
+  --ifm-color-primary-dark: #276560;
+  --ifm-color-primary-darker: #245c57;
+  --ifm-color-primary-darkest: #1f524e;
+  --ifm-color-primary-light: #2f7a74;
+  --ifm-color-primary-lighter: #328079;
+  --ifm-color-primary-lightest: #3a948c;
+  --ifm-color-primary-contrast-background: #eaf2f2;
+  --ifm-color-primary-contrast-foreground: #0e2624;
+
+  /* navy-tinted grays, so even the neutrals carry brand hue */
+  --ifm-color-gray-100: #f4f6f8;
+  --ifm-color-gray-200: #e6eaef;
+  --ifm-color-gray-300: #d7dee7;
+  --ifm-color-gray-400: var(--rpp-platform);
+  --ifm-color-gray-500: #94a3b8;
+  --ifm-color-gray-600: #6f8099;
+  --ifm-color-gray-700: #4f637d;
+  --ifm-color-gray-800: #2c4763;
+  --ifm-color-gray-900: var(--rpp-universum);
+
+  /* semantic — these drive the five admonition variants */
+  --ifm-color-success: #2a6e68;
+  --ifm-color-success-contrast-background: #eaf2f2;
+  --ifm-color-success-contrast-foreground: #0e2624;
+  --ifm-color-info: var(--rpp-info);
+  --ifm-color-info-contrast-background: #e9f2f9;
+  --ifm-color-info-contrast-foreground: #0a243b;
+  --ifm-color-warning: var(--rpp-zuendung);
+  --ifm-color-warning-contrast-background: #fdf1f0;
+  --ifm-color-warning-contrast-foreground: #462321;
+  --ifm-color-danger: var(--rpp-zuendung-deep);
+  --ifm-color-danger-contrast-background: #fae9e9;
+  --ifm-color-danger-contrast-foreground: #3e0c0a;
+  --ifm-color-secondary: #e4eaed;
+  --ifm-color-secondary-contrast-background: #e4eaed;
+  --ifm-color-secondary-contrast-foreground: #14273a;
+
+  --ifm-background-color: var(--rpp-bg);
+  --ifm-background-surface-color: var(--rpp-bg);
+  --ifm-hover-overlay: rgba(var(--rpp-universum-rgb), 0.05);
+
+  --ifm-color-content: var(--rpp-text);
+  --ifm-color-content-secondary: var(--rpp-text-2);
+
+  /* type */
+  --ifm-font-family-base: var(--rpp-font-body);
+  --ifm-font-family-monospace: var(--rpp-font-mono);
+  --ifm-heading-font-family: var(--rpp-font-heading);
+  --ifm-heading-font-weight: 600;
+  --ifm-heading-line-height: 1.15;
+  --ifm-line-height-base: 1.7;
+  --ifm-h1-font-size: 2.6rem;
+  --ifm-h2-font-size: 1.9rem;
+  --ifm-h3-font-size: 1.35rem;
+  --ifm-h4-font-size: 1.05rem;
+
+  /* shape */
+  --ifm-global-radius: var(--rpp-radius-md);
+  --ifm-container-width: var(--rpp-container);
+  --ifm-container-width-xl: var(--rpp-container);
+  --ifm-global-shadow-lw: var(--rpp-shadow-md);
+  --ifm-global-shadow-md: var(--rpp-shadow-lg);
+  --ifm-global-shadow-tl: var(--rpp-shadow-xl);
+
+  --ifm-link-color: var(--rpp-primary);
+  --ifm-link-hover-color: var(--ifm-color-primary-darkest);
+  --ifm-link-decoration: none;
+  --ifm-link-hover-decoration: underline;
+
+  /* navbar */
+  --ifm-navbar-height: 4rem;
+  --ifm-navbar-background-color: rgba(255, 255, 255, 0.8);
+  --ifm-navbar-shadow: none;
+  --ifm-navbar-link-color: var(--rpp-text-2);
+  --ifm-navbar-link-hover-color: var(--rpp-text);
+  --ifm-navbar-link-active-color: var(--rpp-primary);
+  --ifm-navbar-search-input-background-color: var(--rpp-glass);
+  --ifm-navbar-search-input-color: var(--rpp-text);
+  --ifm-navbar-search-input-placeholder-color: var(--rpp-text-3);
+
+  /* sidebar */
+  --ifm-menu-color: var(--rpp-text-2);
+  --ifm-menu-color-active: var(--rpp-primary);
+  --ifm-menu-color-background-active: var(--rpp-glass-strong);
+  --ifm-menu-color-background-hover: var(--rpp-glass);
+  --ifm-menu-link-padding-vertical: 0.45rem;
+  --ifm-menu-link-padding-horizontal: 0.8rem;
+
+  /* TOC */
+  --ifm-toc-border-color: var(--rpp-line);
+  --ifm-toc-link-color: var(--ifm-color-gray-700);
+  --ifm-toc-padding-vertical: 0.35rem;
+
+  /* tables */
+  --ifm-table-border-color: var(--rpp-line);
+  --ifm-table-border-width: 1px;
+  --ifm-table-stripe-background: var(--rpp-glass);
+  --ifm-table-head-background: var(--rpp-surface);
+  --ifm-table-head-color: var(--rpp-text-2);
+  --ifm-table-head-font-weight: 600;
+  --ifm-table-cell-padding: 0.7rem 0.9rem;
+
+  /* code */
+  --ifm-code-font-size: 88%;
+  --ifm-code-border-radius: var(--rpp-radius-sm);
+  --ifm-code-background: var(--rpp-glass-strong);
+  --ifm-code-color: var(--ifm-color-primary-darkest);
+  --ifm-code-padding-horizontal: 0.3rem;
+  --ifm-code-padding-vertical: 0.12rem;
+  --ifm-pre-padding: 1.1rem;
+  --docusaurus-highlighted-code-line-bg: rgba(var(--rpp-hue-rgb), 0.16);
+
+  /* blockquote */
+  --ifm-blockquote-color: var(--rpp-text-2);
+  --ifm-blockquote-border-color: var(--rpp-accent);
+  --ifm-blockquote-border-left-width: 3px;
+  --ifm-blockquote-padding-horizontal: 1.25rem;
+  --ifm-blockquote-padding-vertical: 0.35rem;
+
+  /* admonitions */
+  --ifm-alert-border-radius: var(--rpp-radius-lg);
+  --ifm-alert-border-width: 1px;
+  --ifm-alert-border-left-width: 3px;
+  --ifm-alert-shadow: none;
+  --ifm-alert-padding-vertical: 1rem;
+  --ifm-alert-padding-horizontal: 1.1rem;
+
+  /* breadcrumbs */
+  --ifm-breadcrumb-border-radius: var(--rpp-radius-full);
+  --ifm-breadcrumb-color-active: var(--rpp-primary);
+  --ifm-breadcrumb-item-background-active: var(--rpp-glass-strong);
+  --ifm-breadcrumb-padding-horizontal: 0.7rem;
+
+  /* pagination */
+  --ifm-pagination-nav-border-radius: var(--rpp-radius-xl);
+  --ifm-pagination-nav-color-hover: var(--rpp-primary);
+
+  /* misc chrome */
+  --ifm-hr-background-color: var(--rpp-line);
+  --ifm-hr-height: 1px;
+  --ifm-hr-margin-vertical: 3rem;
+  --ifm-dropdown-background-color: var(--rpp-bg);
+  --ifm-dropdown-link-color: var(--rpp-text-2);
+  --ifm-dropdown-hover-background-color: var(--rpp-glass);
+  --ifm-card-background-color: var(--rpp-bg);
+  --ifm-card-border-radius: var(--rpp-radius-2xl);
+  --ifm-scrollbar-track-background-color: transparent;
+  --ifm-scrollbar-thumb-background-color: var(--rpp-line-solid);
+  --ifm-scrollbar-thumb-hover-background-color: var(--ifm-color-gray-500);
+
+  /* The footer stays on the dark space ground in BOTH modes — together with
+     the code surface it is what keeps the brand recognizable across the
+     toggle. */
+  --ifm-footer-background-color: var(--rpp-space-raised);
+  --ifm-footer-color: var(--rpp-t2);
+  --ifm-footer-link-color: var(--rpp-t2);
+  --ifm-footer-link-hover-color: var(--rpp-hue);
+  --ifm-footer-title-color: var(--rpp-t1);
+
+  --doc-sidebar-width: 290px;
+}
+
+/* ========================================================================== */
+/*  DARK — matches the rpp.gmbh surface exactly                               */
+/* ========================================================================== */
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* ------------------------------------------------- L2 semantic — DARK */
+  --rpp-bg: var(--rpp-space);
+  --rpp-surface: #070d1a;
+  --rpp-surface-2: var(--rpp-space-raised);
+  --rpp-glass: rgba(255, 255, 255, 0.035);
+  --rpp-glass-strong: rgba(255, 255, 255, 0.06);
+  --rpp-line: rgba(159, 176, 204, 0.16);
+  --rpp-line-solid: #1c222f;
+  --rpp-text: var(--rpp-t1);
+  --rpp-text-2: var(--rpp-t2);
+  --rpp-text-3: var(--rpp-t3);
+  --rpp-primary: var(--rpp-hue); /* 10.19:1 on #030712 — safe as text here */
+  --rpp-decor: var(--rpp-hue);
+  --rpp-accent: var(--rpp-zuendung);
+  --rpp-accent-text: var(--rpp-zuendung);
+  --rpp-card-bg: rgba(3, 7, 18, 0.55);
+  --rpp-glow: 0 8px 24px rgba(var(--rpp-hue-rgb), 0.22);
+
+  /* --------------------------------------------------- L3 Infima — DARK */
+  --ifm-color-primary: #77c6c0;
+  --ifm-color-primary-dark: #61bdb6;
+  --ifm-color-primary-darker: #55b8b0;
+  --ifm-color-primary-darkest: #429c95;
+  --ifm-color-primary-light: #8dcfca;
+  --ifm-color-primary-lighter: #99d4cf;
+  --ifm-color-primary-lightest: #bae2df;
+  --ifm-color-primary-contrast-background: #243c3a;
+  --ifm-color-primary-contrast-foreground: #f1f9f9;
+
+  /* Declared explicitly rather than relying on Infima's gray inversion, so
+     t3/t2/t1 land exactly on 700/800/900 where Infima actually uses them. */
+  --ifm-color-emphasis-0: var(--rpp-space);
+  --ifm-color-emphasis-100: #0a101d;
+  --ifm-color-emphasis-200: #131a29;
+  --ifm-color-emphasis-300: var(--rpp-line-solid);
+  --ifm-color-emphasis-400: #2a3446;
+  --ifm-color-emphasis-500: #3d4a61;
+  --ifm-color-emphasis-600: #5c6d8c;
+  --ifm-color-emphasis-700: var(--rpp-t3);
+  --ifm-color-emphasis-800: var(--rpp-t2);
+  --ifm-color-emphasis-900: var(--rpp-t1);
+  --ifm-color-emphasis-1000: #ffffff;
+
+  --ifm-background-color: var(--rpp-bg);
+  --ifm-background-surface-color: var(--rpp-surface);
+  --ifm-hover-overlay: rgba(var(--rpp-hue-rgb), 0.08);
+
+  --ifm-color-content: var(--rpp-t1);
+  /* Infima's dark block sets this to pure white; --t2 is the brand ramp. */
+  --ifm-color-content-secondary: var(--rpp-t2);
+
+  --ifm-link-color: var(--rpp-hue);
+  --ifm-link-hover-color: var(--rpp-hue-hover);
+
+  --ifm-navbar-background-color: rgba(3, 7, 18, 0.72);
+  --ifm-navbar-link-color: var(--rpp-t2);
+  --ifm-navbar-link-hover-color: var(--rpp-t1);
+  --ifm-navbar-link-active-color: var(--rpp-hue);
+  --ifm-navbar-search-input-background-color: var(--rpp-glass);
+  --ifm-navbar-search-input-placeholder-color: var(--rpp-t3);
+
+  --ifm-menu-color: var(--rpp-t2);
+  --ifm-menu-color-active: var(--rpp-hue);
+  --ifm-menu-color-background-active: var(--rpp-glass-strong);
+  --ifm-menu-color-background-hover: var(--rpp-glass);
+
+  --ifm-toc-link-color: var(--rpp-t2);
+  --ifm-toc-border-color: var(--rpp-line);
+
+  --ifm-table-border-color: var(--rpp-line);
+  --ifm-table-stripe-background: rgba(255, 255, 255, 0.025);
+  --ifm-table-head-background: var(--rpp-glass);
+  --ifm-table-head-color: var(--rpp-t2);
+
+  --ifm-code-background: var(--rpp-glass-strong);
+  --ifm-code-color: var(--ifm-color-primary-lighter);
+  --docusaurus-highlighted-code-line-bg: rgba(var(--rpp-hue-rgb), 0.12);
+
+  --ifm-blockquote-color: var(--rpp-t2);
+  --ifm-hr-background-color: var(--rpp-line);
+  --ifm-card-background-color: var(--rpp-glass);
+  --ifm-dropdown-background-color: var(--rpp-surface);
+  --ifm-dropdown-link-color: var(--rpp-t2);
+
+  --ifm-scrollbar-track-background-color: transparent;
+  --ifm-scrollbar-thumb-background-color: #2a3446;
+  --ifm-scrollbar-thumb-hover-background-color: #3d4a61;
+
+  /* semantic — the contrast pairs swap */
+  --ifm-color-success: var(--rpp-hue);
+  --ifm-color-success-contrast-background: #17332f;
+  --ifm-color-success-contrast-foreground: var(--rpp-t1);
+  --ifm-color-info: #6fb0ea;
+  --ifm-color-info-contrast-background: #122436;
+  --ifm-color-info-contrast-foreground: var(--rpp-t1);
+  --ifm-color-warning: var(--rpp-zuendung);
+  --ifm-color-warning-contrast-background: #33201e;
+  --ifm-color-warning-contrast-foreground: var(--rpp-t1);
+  --ifm-color-danger: #ef9d99;
+  --ifm-color-danger-contrast-background: #33161a;
+  --ifm-color-danger-contrast-foreground: var(--rpp-t1);
+  --ifm-color-secondary: #131a29;
+  --ifm-color-secondary-contrast-background: #131a29;
+  --ifm-color-secondary-contrast-foreground: var(--rpp-t1);
+}

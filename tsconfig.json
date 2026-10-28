@@ -4,8 +4,22 @@
     "types": ["node", "@docusaurus/module-type-aliases", "@docusaurus/theme-classic"],
     "resolveJsonModule": true,
     "allowImportingTsExtensions": false,
-    "ignoreDeprecations": "6.0"
+    "ignoreDeprecations": "6.0",
+    "baseUrl": ".",
+    "paths": {
+      "@site/*": ["./*"]
+    }
   },
-  "include": ["docusaurus.config.ts", "scripts", "plugins", "src", "tests", "vitest.config.ts"],
+  "include": [
+    "docusaurus.config.ts",
+    "scripts",
+    "plugins",
+    "site",
+    "mermaid-theme.ts",
+    "constants.ts",
+    "src",
+    "tests",
+    "vitest.config.ts"
+  ],
   "exclude": ["node_modules", ".cache", "build", ".docusaurus", "tests/.tmp"]
 }

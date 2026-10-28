@@ -4,12 +4,12 @@ import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { createRepo, createStandardFixtures, revParse } from '../tests/helpers/fixtures';
-import { authEnv, fetchVersion, redact } from './fetch-docs';
 import { loadSources } from './lib/config';
+import { authEnv, fetchVersion, redact } from './lib/fetch';
 import { readLock, writeLock } from './lib/lock';
+import { prepare } from './lib/prepare';
 import { LocalGitProvider } from './lib/providers/local-git';
 import { runSync } from './lib/sync';
-import { prepare } from './prepare-docs';
 
 const json = (p: string) => JSON.parse(readFileSync(p, 'utf8'));
 

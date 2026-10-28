@@ -26,28 +26,35 @@ function makeProvider(): Provider {
   throw new Error(`unknown --provider "${values.provider}" (github | local-git)`);
 }
 
-const config = loadSources(values.config);
-const lockPath = values.lock as string;
-const before = existsSync(lockPath) ? readFileSync(lockPath, 'utf8') : '';
+async function main() {
+  const config = loadSources(values.config);
+  const lockPath = values.lock as string;
+  const before = existsSync(lockPath) ? readFileSync(lockPath, 'utf8') : '';
 
-const { lock, summary, warnings } = await runSync({
-  config,
-  lock: readLock(lockPath),
-  provider: makeProvider(),
-  only: values.only,
-});
+  const { lock, summary, warnings } = await runSync({
+    config,
+    lock: readLock(lockPath),
+    provider: makeProvider(),
+    only: values.only,
+  });
 
-const after = serializeLock(lock);
-const changed = after !== before;
+  const after = serializeLock(lock);
+  const changed = after !== before;
 
-for (const w of warnings) console.warn(`warning: ${w}`);
-console.log(changed ? summary : `${summary}\n(lock file unchanged)`);
+  for (const w of warnings) console.warn(`warning: ${w}`);
+  console.log(changed ? summary : `${summary}\n(lock file unchanged)`);
 
-if (values['dry-run']) {
-  console.log(`\n--dry-run: ${changed ? 'would update' : 'would not touch'} ${lockPath}`);
-} else {
-  const summaryPath = values.summary as string;
-  mkdirSync(dirname(summaryPath), { recursive: true });
-  writeFileSync(summaryPath, `${summary}\n`);
-  if (changed) writeFileSync(lockPath, after);
+  if (values['dry-run']) {
+    console.log(`\n--dry-run: ${changed ? 'would update' : 'would not touch'} ${lockPath}`);
+  } else {
+    const summaryPath = values.summary as string;
+    mkdirSync(dirname(summaryPath), { recursive: true });
+    writeFileSync(summaryPath, `${summary}\n`);
+    if (changed) writeFileSync(lockPath, after);
+  }
 }
+
+main().catch((err) => {
+  console.error(err instanceof Error ? err.message : err);
+  process.exit(1);
+});

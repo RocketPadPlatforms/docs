@@ -13,7 +13,8 @@
       "!pnpm-lock.yaml",
       "!*_versions.json",
       "!*_versioned_docs",
-      "!*_versioned_sidebars"
+      "!*_versioned_sidebars",
+      "!static"
     ]
   },
   "formatter": {
@@ -25,5 +26,23 @@
     "formatter": {
       "quoteStyle": "single"
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["src/css/**", "src/theme/Mermaid/**"],
+      "linter": {
+        "rules": {
+          "complexity": {
+            "noImportantStyles": "off"
+          },
+          "style": {
+            "noDescendingSpecificity": "off"
+          },
+          "security": {
+            "noDangerouslySetInnerHtml": "off"
+          }
+        }
+      }
+    }
+  ]
 }

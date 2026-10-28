@@ -1,5 +1,5 @@
 import { readFileSync } from 'node:fs';
-import { z } from 'zod';
+import * as z from 'zod';
 
 // Route segments that would collide with files Docusaurus or the site itself emits.
 const RESERVED_IDS = new Set(['assets', 'img', 'fonts', '404', 'search', 'markdown-page']);

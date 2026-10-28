@@ -1,0 +1,207 @@
+/**
+ * STACKING CONTRACT — break these and the sky either vanishes or covers text.
+ *
+ *   .sky uses z-index:-1, so it paints above the html canvas background and
+ *   below every piece of page content, leaving all Docusaurus chrome alone
+ *   (navbar z-index:200, mobile drawer, search modal all stay above it).
+ *
+ *   This requires that NO ancestor of .sky creates a stacking context. On
+ *   html, body and #__docusaurus there must be no transform / filter /
+ *   backdrop-filter / perspective / will-change / contain:paint|layout|strict /
+ *   isolation / mix-blend-mode / opacity<1, and `body` must not be given an
+ *   opaque background-color — Infima puts the page background on `html`, where
+ *   it has to stay. (See the matching note in src/css/base.css.)
+ *
+ *   The marketing site uses z-index:0 instead, which is why it needs
+ *   `.cm-root > :not(.cm-sky){position:relative;z-index:1}`. Porting that rule
+ *   here would be a trap: `#__docusaurus > *` carries an ID, so it would
+ *   outrank `.navbar{z-index:200}` and break the mobile drawer.
+ *
+ * MOTION CONTRACT
+ *   Keyframes translate by exactly one background tile, so the loop is
+ *   seamless and only one tile of overdraw is needed. NEVER add
+ *   animation-fill-mode here — the layers must fall back to their untransformed
+ *   base style when animation is disabled.
+ */
+
+.sky {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  /* size/style only — NOT paint or layout, which would create a containing
+     block for fixed descendants and defeat the contract above. */
+  contain: size style;
+  opacity: 0.45; /* default = the subtle variant used on every docs page */
+  transition: opacity 0.4s ease;
+}
+
+/* The landing page opts in to full intensity (set via HtmlClassNameProvider).
+   Defaulting to subtle means any future page is calm unless it asks not to be. */
+:global(html.rpp-page-landing) .sky {
+  opacity: 1;
+}
+
+/* ------------------------------------------------------------------ nebula */
+
+.nebula {
+  position: absolute;
+  inset: -10%;
+  background:
+    radial-gradient(640px 640px at 94% -10%, rgba(119, 198, 192, 0.2), transparent 68%),
+    radial-gradient(580px 580px at -8% 40%, rgba(232, 115, 109, 0.16), transparent 68%),
+    radial-gradient(520px 520px at 56% 112%, rgba(99, 116, 154, 0.16), transparent 68%);
+}
+
+:global(html.rpp-page-landing) .nebula {
+  animation: rppNebula 120s ease-in-out infinite alternate;
+}
+
+@keyframes rppNebula {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(1.5%, -1.5%, 0) scale(1.06);
+  }
+}
+
+/* ------------------------------------------------------------------- stars */
+
+.stars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-repeat: repeat;
+}
+
+/* Parallax and the one tile of overdraw only exist while the layer drifts.
+   On docs pages this block never applies, so the sky costs a single flat
+   fixed layer with no overdraw at all. */
+:global(html.rpp-page-landing) .stars {
+  left: calc(-1 * var(--rpp-tile));
+  width: calc(100% + var(--rpp-tile));
+  height: calc(100% + var(--rpp-tile));
+  will-change: transform;
+  animation: rppDrift var(--rpp-drift) linear infinite;
+}
+
+@keyframes rppDrift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(var(--rpp-tile), calc(-1 * var(--rpp-tile)), 0);
+  }
+}
+
+.starsFar {
+  --rpp-tile: 300px;
+  --rpp-drift: 240s;
+  opacity: 0.55;
+  background-size: 300px 300px;
+  background-image:
+    radial-gradient(1px 1px at 10% 20%, #fff, transparent),
+    radial-gradient(1px 1px at 30% 70%, #fff, transparent),
+    radial-gradient(1px 1px at 60% 40%, #fff, transparent),
+    radial-gradient(1px 1px at 80% 80%, #fff, transparent),
+    radial-gradient(1px 1px at 90% 10%, #fff, transparent),
+    radial-gradient(1px 1px at 45% 90%, #fff, transparent);
+}
+
+.starsMid {
+  --rpp-tile: 480px;
+  --rpp-drift: 150s;
+  opacity: 0.62;
+  background-size: 480px 480px;
+  background-image:
+    radial-gradient(1.4px 1.4px at 25% 35%, rgba(119, 198, 192, 0.9), transparent),
+    radial-gradient(1.4px 1.4px at 65% 15%, #fff, transparent),
+    radial-gradient(1.4px 1.4px at 85% 55%, #fff, transparent),
+    radial-gradient(1.4px 1.4px at 15% 75%, rgba(232, 115, 109, 0.8), transparent);
+}
+
+.starsNear {
+  --rpp-tile: 700px;
+  --rpp-drift: 90s;
+  opacity: 0.7;
+  background-size: 700px 700px;
+  background-image:
+    radial-gradient(2px 2px at 40% 25%, #fff, transparent),
+    radial-gradient(2px 2px at 75% 65%, rgba(119, 198, 192, 0.9), transparent),
+    radial-gradient(2px 2px at 20% 55%, #fff, transparent);
+}
+
+/* -------------------------------------------------------------- light mode */
+/* Nebulae only, much weaker. White stars are invisible on a light ground and
+   dark ones read as dust, so the star layers are dropped entirely. */
+
+:global(html[data-theme="light"]) .sky {
+  opacity: 0.5;
+}
+
+:global(html.rpp-page-landing[data-theme="light"]) .sky {
+  opacity: 0.9;
+}
+
+:global(html[data-theme="light"]) .nebula {
+  background:
+    radial-gradient(640px 640px at 94% -10%, rgba(119, 198, 192, 0.14), transparent 70%),
+    radial-gradient(580px 580px at -8% 40%, rgba(232, 115, 109, 0.1), transparent 70%),
+    radial-gradient(520px 520px at 56% 112%, rgba(181, 194, 211, 0.18), transparent 70%);
+}
+
+:global(html[data-theme="light"]) .stars {
+  display: none;
+}
+
+/* ------------------------------------------------------------ small screens */
+
+@media (max-width: 560px) {
+  .starsNear {
+    display: none;
+  }
+}
+
+/* ----------------------------------------------------------- reduced motion */
+/* Self-contained rather than relying on the global !important collapse in
+   base.css: these keyframes do not end at the base style, so collapsing their
+   duration alone would park every layer one tile off. */
+
+@media (prefers-reduced-motion: reduce) {
+  .nebula,
+  :global(html.rpp-page-landing) .nebula,
+  :global(html.rpp-page-landing) .stars {
+    animation: none;
+    will-change: auto;
+  }
+
+  :global(html.rpp-page-landing) .stars {
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .sky {
+    transition: none;
+  }
+}
+
+/* --------------------------------------------------------- print / a11y */
+
+@media print {
+  .sky {
+    display: none;
+  }
+}
+
+/* In Windows High Contrast the gradients are stripped to system colors and
+   the layer turns into noise. */
+@media (forced-colors: active) {
+  .sky {
+    display: none;
+  }
+}

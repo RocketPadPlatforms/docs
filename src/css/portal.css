@@ -1,0 +1,8 @@
+/* Portal-specific additions on top of the brand tokens. */
+
+/* A version dropdown is only rendered for the app being read (see the generated
+   html:not(.docs-app-<id>) rules); keep it visually quiet next to the app link. */
+.navbar .version-dropdown > .navbar__link {
+  font-family: var(--rpp-font-mono);
+  font-size: 0.85rem;
+}

@@ -1,6 +1,6 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import semver from 'semver';
-import { z } from 'zod';
+import * as z from 'zod';
 
 const versionName = z.string().refine((v) => validateVersionName(v) === null, 'invalid version');
 

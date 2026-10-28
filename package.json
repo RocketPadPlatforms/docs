@@ -17,6 +17,7 @@
     "serve": "docusaurus serve --dir build",
     "dev:local": "tsx scripts/dev-local.ts",
     "check:size": "tsx scripts/check-size.ts",
+    "check:build": "tsx scripts/check-build.ts",
     "check:legacy": "tsx scripts/check-legacy.ts",
     "typecheck": "tsc --noEmit",
     "lint": "biome check .",

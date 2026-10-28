@@ -1,4 +1,4 @@
-import { mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readdirSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { git } from '../../scripts/lib/git';
 
@@ -20,6 +20,8 @@ export interface FixtureRelease {
   /** complete file tree of the repo at this tag */
   files: Record<string, string>;
   annotated?: boolean;
+  /** path -> link target, for testing that symlinks in app docs are rejected */
+  symlinks?: Record<string, string>;
 }
 
 const run = (cwd: string, args: string[]) => git(args, { cwd, env: IDENTITY });
@@ -30,6 +32,9 @@ export async function createRepo(root: string, repo: string, releases: FixtureRe
   rmSync(dir, { recursive: true, force: true });
   mkdirSync(dir, { recursive: true });
   await run(dir, ['init', '-q', '-b', 'main']);
+  // GitHub serves blob-filtered fetches of arbitrary SHAs; mirror that for file:// remotes
+  await run(dir, ['config', 'uploadpack.allowFilter', 'true']);
+  await run(dir, ['config', 'uploadpack.allowAnySHA1InWant', 'true']);
   for (const r of releases) await addRelease(root, repo, r);
   return dir;
 }
@@ -42,6 +47,10 @@ export async function addRelease(root: string, repo: string, r: FixtureRelease) 
   for (const [path, content] of Object.entries(r.files)) {
     mkdirSync(dirname(join(dir, path)), { recursive: true });
     writeFileSync(join(dir, path), content);
+  }
+  for (const [path, target] of Object.entries(r.symlinks ?? {})) {
+    mkdirSync(dirname(join(dir, path)), { recursive: true });
+    symlinkSync(target, join(dir, path));
   }
   await run(dir, ['add', '-A']);
   await run(dir, ['commit', '-q', '--allow-empty', '-m', `release ${r.tag}`]);

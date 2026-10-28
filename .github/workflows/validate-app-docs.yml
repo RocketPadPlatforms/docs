@@ -32,7 +32,7 @@ permissions: {}
 
 jobs:
   validate:
-    runs-on: [self-hosted, linux, x64]
+    runs-on: ubuntu-latest
     permissions:
       contents: read
     # github.workflow is the caller's workflow, so it is not unique on its own

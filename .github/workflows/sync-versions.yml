@@ -20,7 +20,7 @@ concurrency:
 jobs:
   sync:
     if: github.ref == 'refs/heads/main'
-    runs-on: [self-hosted, linux, x64]
+    runs-on: ubuntu-latest
     permissions:
       contents: read
     steps:

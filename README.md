@@ -239,20 +239,12 @@ App repositories never get a token with Contents write on this repository.
 
 ## Runners
 
-Every job runs on `[self-hosted, linux, x64]` because hosted minutes ran out. The runner needs
-git and outbound HTTPS; Node and pnpm are installed by the workflows.
+Every job runs on GitHub-hosted runners (`ubuntu-latest`), which are free for public repositories.
+`validate-app-docs.yml` runs in the calling app repository, so private app repositories use the
+hosted minutes of their own plan.
 
-Because this repository is public, harden the runner:
-
-- Settings → Actions → General → "Run workflows from fork pull requests": **Require approval for
-  all external contributors**. `pr.yml` also skips every job for fork PRs and uses `pull_request`
-  only (never `pull_request_target`).
-- Put the runner in a **runner group** that only this repository and the app repositories may use.
-  Prefer ephemeral runners.
-
-Hosted runners are free for public repositories. When you want them back, merge the pull request
-`ci/hosted-runners`, which only changes `runs-on` to `ubuntu-latest`. (`validate-app-docs.yml` runs
-in private app repositories, where hosted minutes are billed.)
+Fork pull requests are not built: `pr.yml` skips every job for them, because they have no access to
+the docs sources. It uses `pull_request` only (never `pull_request_target`).
 
 ## Pages and custom domain
 
@@ -327,7 +319,7 @@ on:
 permissions: {}
 jobs:
   notify:
-    runs-on: [self-hosted, linux, x64]
+    runs-on: ubuntu-latest
     permissions: {}
     steps:
       - id: token

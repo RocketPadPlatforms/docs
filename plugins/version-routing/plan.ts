@@ -51,3 +51,42 @@ export function planRedirects(opts: {
   }
   return { writes: [...writes.values()], problems };
 }
+
+/**
+ * Old URLs -> new pages. Unlike version roots, these may never replace an existing file.
+ */
+export function planLegacy(opts: {
+  legacy: Record<string, string | false | null>;
+  routesPaths: string[];
+  outDir: string;
+  siteUrl: string;
+  exists: (file: string) => boolean;
+}): { writes: RedirectWrite[]; problems: string[]; open: string[] } {
+  const routes = new Set(opts.routesPaths.map(stripSlash));
+  const out = resolve(opts.outDir);
+  const writes: RedirectWrite[] = [];
+  const problems: string[] = [];
+  const open: string[] = [];
+  const seen = new Set<string>();
+
+  for (const [source, target] of Object.entries(opts.legacy)) {
+    if (target === null) {
+      open.push(source);
+      continue;
+    }
+    if (target === false) continue;
+    const file = resolve(join(out, source, 'index.html'));
+    if (!file.startsWith(out + sep)) {
+      problems.push(`legacy ${source}: would be written outside the build output`);
+    } else if (!routes.has(stripSlash(target))) {
+      problems.push(`legacy ${source}: redirect target ${target} is not a built route`);
+    } else if (opts.exists(file) || seen.has(file)) {
+      problems.push(`legacy ${source}: would overwrite an existing file (${file})`);
+    } else {
+      seen.add(file);
+      const canonical = new URL(withSlash(target), opts.siteUrl).href;
+      writes.push({ file, html: redirectHtml(withSlash(target), canonical) });
+    }
+  }
+  return { writes, problems, open };
+}

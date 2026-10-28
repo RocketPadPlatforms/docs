@@ -1,10 +1,10 @@
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { dirname } from 'node:path';
 import type { LoadContext, Plugin } from '@docusaurus/types';
 import semver from 'semver';
 import { dropdownCss } from '../../site/instances';
 import { readDocsVersions } from './docs-content';
-import { planRedirects } from './plan';
+import { planLegacy, planRedirects } from './plan';
 import { startPage } from './start-pages';
 import {
   type AppData,
@@ -61,18 +61,27 @@ export default function versionRouting(_context: LoadContext, rawOptions: unknow
     },
 
     async postBuild({ outDir, routesPaths, siteConfig, baseUrl }) {
-      const { writes, problems } = planRedirects({
-        apps,
+      const siteUrl = new URL(baseUrl, siteConfig.url).href;
+      const versionPlan = planRedirects({ apps, routesPaths, outDir, siteUrl });
+      const legacyPlan = planLegacy({
+        legacy: options.legacy,
         routesPaths,
         outDir,
-        siteUrl: new URL(baseUrl, siteConfig.url).href,
+        siteUrl,
+        exists: existsSync,
       });
+      const problems = [...versionPlan.problems, ...legacyPlan.problems];
       if (problems.length) {
         throw new Error(
           `version-routing: ${problems.length} problem(s)\n- ${problems.join('\n- ')}`,
         );
       }
-      for (const w of writes) {
+      if (legacyPlan.open.length) {
+        console.warn(
+          `[WARNING] ${legacyPlan.open.length} legacy URL(s) have no redirect decision yet (legacy-redirects.json)`,
+        );
+      }
+      for (const w of [...versionPlan.writes, ...legacyPlan.writes]) {
         mkdirSync(dirname(w.file), { recursive: true });
         writeFileSync(w.file, w.html);
       }

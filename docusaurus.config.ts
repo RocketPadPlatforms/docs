@@ -6,6 +6,7 @@ import constants from './constants';
 import versionRouting, { isRedirectRoot } from './plugins/version-routing';
 import { loadSources } from './scripts/lib/config';
 import { readIndex } from './scripts/lib/docs-index';
+import { readLegacy } from './scripts/lib/legacy';
 import { makeBrokenHook, parseSeverity } from './site/broken-links';
 import { buildInstances, navbarItems, parseLocal, parseOnly } from './site/instances';
 
@@ -110,6 +111,7 @@ const config: Config = {
     [
       versionRouting,
       {
+        legacy: readLegacy(),
         apps: instances.map((i) => ({
           id: i.id,
           label: i.label,

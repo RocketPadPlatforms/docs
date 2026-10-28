@@ -125,3 +125,26 @@ export async function createStandardFixtures(root: string) {
     { tag: 'v0.2.0', files: appBFiles('0.2.0'), annotated: true },
   ]);
 }
+
+/** No root doc (no slug "/"), but a sidebar: the start page is the first sidebar doc. */
+export function appCFiles(): Record<string, string> {
+  return {
+    'docs/guide.md': doc('guide', 'Guide C', 'Only page, listed in the sidebar.'),
+    'docs/sidebars.json': JSON.stringify({ docs: ['guide'] }),
+  };
+}
+
+/** No root doc and no doc in the sidebar: this version has no start page. */
+export function appDFiles(): Record<string, string> {
+  return {
+    'docs/orphan.md': doc('orphan', 'Orphan', 'Not reachable from the sidebar.'),
+    'docs/sidebars.json': JSON.stringify({
+      docs: [{ type: 'link', label: 'Elsewhere', href: 'https://example.com' }],
+    }),
+  };
+}
+
+/** A healthy version (root doc) to sit next to a broken older one. */
+export function appDGoodFiles(): Record<string, string> {
+  return { 'docs/index.md': doc('index', 'App D', 'Start page.', 'slug: /\n') };
+}

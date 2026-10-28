@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { DOCS_PLUGIN_NAME, type DocsVersion, readDocsVersions } from './docs-content';
-import { planRedirects } from './plan';
+import { planLegacy, planRedirects } from './plan';
 import { redirectHtml } from './redirect-html';
 import { startPage } from './start-pages';
 import type { AppData } from './types';
@@ -175,5 +175,38 @@ describe('redirectHtml', () => {
     const html = redirectHtml('/a"b</script>/', 'https://x.test/a/');
     expect(html).not.toContain('</script>/');
     expect(html).toContain('&quot;');
+  });
+});
+
+describe('planLegacy', () => {
+  const base = {
+    routesPaths: ['/app-a/guide/'],
+    outDir: '/out',
+    siteUrl: 'https://docs.example.com/',
+  };
+  const run = (legacy: Record<string, string | false | null>, exists = (_f: string) => false) =>
+    planLegacy({ ...base, legacy, exists });
+
+  it('writes a redirect page per decided URL, skips dropped ones and reports open ones', () => {
+    const r = run({ '/docs/guide': '/app-a/guide/', '/docs/gone': false, '/docs/todo': null });
+    expect(r.problems).toEqual([]);
+    expect(r.open).toEqual(['/docs/todo']);
+    expect(r.writes.map((w) => w.file)).toEqual(['/out/docs/guide/index.html']);
+    expect(r.writes[0].html).toContain('url=/app-a/guide/');
+  });
+
+  it('fails when the target is not a built route', () => {
+    expect(run({ '/docs/x': '/app-a/missing/' }).problems.join()).toMatch(/not a built route/);
+  });
+
+  it('never overwrites an existing file', () => {
+    const r = run({ '/docs/guide': '/app-a/guide/' }, () => true);
+    expect(r.problems.join()).toMatch(/overwrite an existing file/);
+  });
+
+  it('refuses to write outside the build output', () => {
+    expect(run({ '/../evil': '/app-a/guide/' }).problems.join()).toMatch(
+      /outside the build output/,
+    );
   });
 });

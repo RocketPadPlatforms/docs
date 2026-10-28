@@ -22,7 +22,7 @@
     "lint": "biome check .",
     "format": "biome check --write .",
     "test": "vitest run",
-    "test:e2e": "tsx tests/e2e/run.ts"
+    "test:e2e": "vitest run --config vitest.e2e.config.ts"
   },
   "dependencies": {
     "@docusaurus/core": "3.10.2",

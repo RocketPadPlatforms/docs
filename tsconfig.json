@@ -19,7 +19,8 @@
     "constants.ts",
     "src",
     "tests",
-    "vitest.config.ts"
+    "vitest.config.ts",
+    "vitest.e2e.config.ts"
   ],
   "exclude": ["node_modules", ".cache", "build", ".docusaurus", "tests/.tmp"]
 }

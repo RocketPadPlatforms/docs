@@ -166,6 +166,6 @@ describe('navbar + css', () => {
   it('hides every dropdown unless its app class is on <html>', () => {
     const css = dropdownCss(['app-a']);
     expect(css).toContain('html:not(.docs-app-app-a) .version-dropdown--app-a');
-    expect(css).toContain('li:has(>.version-dropdown--app-a)');
+    expect(css).toContain(':is(div,li):has(>.version-dropdown--app-a)');
   });
 });

@@ -165,13 +165,15 @@ export function navbarItems(instances: Instance[]) {
 
 /**
  * Dropdowns are hidden unless the page's <html> carries docs-app-<id> (set by the
- * docs plugin through the version className). `li:has()` also hides the mobile menu row.
+ * docs plugin through the version className).
  */
 export function dropdownCss(ids: string[]): string {
   return ids
-    .map(
-      (id) =>
-        `html:not(.docs-app-${id}) .version-dropdown--${id},html:not(.docs-app-${id}) li:has(>.version-dropdown--${id}){display:none}`,
-    )
+    .map((id) => {
+      const off = `html:not(.docs-app-${id})`;
+      // Docusaurus puts the className on the toggle link: hide it and the item around it
+      // (desktop: div.navbar__item, mobile menu: li.menu__list-item)
+      return `${off} .version-dropdown--${id},${off} :is(div,li):has(>.version-dropdown--${id}){display:none}`;
+    })
     .join('');
 }

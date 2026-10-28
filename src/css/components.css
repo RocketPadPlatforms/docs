@@ -14,8 +14,15 @@
 /* ========================================================================== */
 
 .navbar {
-  backdrop-filter: saturate(180%) blur(12px);
   border-bottom: 1px solid var(--rpp-line);
+}
+
+/* backdrop-filter makes .navbar the containing block of its position:fixed descendants, which
+   clips the mobile sidebar to the navbar's height. Desktop only (Infima breakpoint 997px). */
+@media (min-width: 997px) {
+  .navbar {
+    backdrop-filter: saturate(180%) blur(12px);
+  }
 }
 
 .navbar__title {

@@ -33,6 +33,8 @@ export interface PluginAppOptions {
 
 export interface VersionRoutingOptions {
   apps: PluginAppOptions[];
+  /** old URL -> new path | false (dropped) | null (undecided) */
+  legacy: Record<string, string | false | null>;
 }
 
 export const PLUGIN_NAME = 'version-routing';

@@ -1,11 +1,19 @@
-import { existsSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readdirSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { createRepo, createStandardFixtures, revParse } from '../tests/helpers/fixtures';
 import { loadSources } from './lib/config';
-import { authEnv, fetchVersion, redact } from './lib/fetch';
+import { authEnv, fetchVersion, pruneCache, redact } from './lib/fetch';
 import { readLock, writeLock } from './lib/lock';
 import { prepare } from './lib/prepare';
 import { LocalGitProvider } from './lib/providers/local-git';
@@ -141,5 +149,20 @@ describe('authEnv / redact', () => {
   it('redacts raw and base64 forms', () => {
     const basic = Buffer.from('x-access-token:tok').toString('base64');
     expect(redact(`a tok b ${basic}`, 'tok')).toBe('a *** b ***');
+  });
+});
+
+describe('pruneCache', () => {
+  it('drops unlocked commits, keeps locked ones and ignores stray files', () => {
+    const root = mkdtempSync(join(tmpdir(), 'prune-'));
+    mkdirSync(join(root, 'app-a', 'locked'), { recursive: true });
+    mkdirSync(join(root, 'app-a', 'stale'), { recursive: true });
+    writeFileSync(join(root, '.keep'), '');
+    const app = loadSources('docs-sources.json').apps[0];
+    pruneCache([{ app: { ...app, id: 'app-a' }, version: '1.0.0', commit: 'locked' }], root);
+    expect(existsSync(join(root, 'app-a/locked'))).toBe(true);
+    expect(existsSync(join(root, 'app-a/stale'))).toBe(false);
+    expect(existsSync(join(root, '.keep'))).toBe(true);
+    rmSync(root, { recursive: true, force: true });
   });
 });

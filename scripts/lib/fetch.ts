@@ -120,10 +120,12 @@ export function lockedTargets(only: string[] = []): FetchTarget[] {
 export function pruneCache(targets: FetchTarget[], root = SOURCES_DIR) {
   if (!existsSync(root)) return;
   const keep = new Set(targets.map((t) => `${t.app.id}/${t.commit}`));
-  for (const appDir of readdirSync(root)) {
-    for (const entry of readdirSync(join(root, appDir))) {
-      if (!keep.has(`${appDir}/${entry}`)) {
-        rmSync(join(root, appDir, entry), { recursive: true, force: true });
+  // only app directories are ours to prune; a stray file (like the .keep marker) is left alone
+  for (const appDir of readdirSync(root, { withFileTypes: true })) {
+    if (!appDir.isDirectory()) continue;
+    for (const entry of readdirSync(join(root, appDir.name))) {
+      if (!keep.has(`${appDir.name}/${entry}`)) {
+        rmSync(join(root, appDir.name, entry), { recursive: true, force: true });
       }
     }
   }

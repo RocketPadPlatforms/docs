@@ -1,0 +1,11 @@
+{
+  "extends": "@docusaurus/tsconfig",
+  "compilerOptions": {
+    "types": ["node", "@docusaurus/module-type-aliases", "@docusaurus/theme-classic"],
+    "resolveJsonModule": true,
+    "allowImportingTsExtensions": false,
+    "ignoreDeprecations": "6.0"
+  },
+  "include": ["docusaurus.config.ts", "scripts", "plugins", "src", "tests", "vitest.config.ts"],
+  "exclude": ["node_modules", ".cache", "build", ".docusaurus", "tests/.tmp"]
+}

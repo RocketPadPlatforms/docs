@@ -1,0 +1,29 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.5.15/schema.json",
+  "files": {
+    "includes": [
+      "**",
+      "!node_modules",
+      "!.cache",
+      "!.docusaurus",
+      "!build",
+      "!generated",
+      "!tests/.tmp",
+      "!docs-versions.lock.json",
+      "!pnpm-lock.yaml",
+      "!*_versions.json",
+      "!*_versioned_docs",
+      "!*_versioned_sidebars"
+    ]
+  },
+  "formatter": {
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 100
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single"
+    }
+  }
+}

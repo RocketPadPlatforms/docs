@@ -1,0 +1,30 @@
+{
+  "apps": [
+    {
+      "id": "app-a",
+      "label": "App A",
+      "description": "Placeholder app. Replace with the real app description for the landing page.",
+      "repo": "RocketPadPlatforms/app-a",
+      "docsPath": "docs",
+      "sidebarFile": "docs/sidebars.json",
+      "source": "releases",
+      "tagPattern": "^v?(\\d+\\.\\d+\\.\\d+)$",
+      "minVersion": "0.1.0",
+      "exclude": [],
+      "retention": "all"
+    },
+    {
+      "id": "app-b",
+      "label": "App B",
+      "description": "Placeholder app. Replace with the real app description for the landing page.",
+      "repo": "RocketPadPlatforms/app-b",
+      "docsPath": "docs",
+      "sidebarFile": "docs/sidebars.json",
+      "source": "releases",
+      "tagPattern": "^v?(\\d+\\.\\d+\\.\\d+)$",
+      "minVersion": "0.1.0",
+      "exclude": [],
+      "retention": "all"
+    }
+  ]
+}

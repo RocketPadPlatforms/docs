@@ -1,0 +1,9 @@
+# Release cooldown: only install versions published at least 7 days ago (minutes).
+# Explicitly set, so pnpm enforces it strictly.
+minimumReleaseAge: 10080
+
+# Dependency build scripts are blocked unless listed here.
+allowBuilds:
+  '@swc/core': true
+  esbuild: true
+  core-js: false

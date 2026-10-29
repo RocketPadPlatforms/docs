@@ -1,0 +1,18 @@
+# .github/workflows/docs.yml in the app repository
+# Validates docs/ against the portal on every PR. No `paths:` filter, so it can be a required
+# check. Replace app-id (and docs-path if it is not docs).
+name: Docs
+
+on:
+  pull_request:
+
+permissions: {}
+
+jobs:
+  validate:
+    permissions:
+      contents: read
+    uses: RocketPadPlatforms/docs/.github/workflows/validate-app-docs.yml@main # pin a tag or SHA once stable
+    with:
+      app-id: app-a
+      docs-path: docs

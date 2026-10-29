@@ -1,0 +1,34 @@
+{
+  "docs": [
+    "index",
+    {
+      "type": "category",
+      "label": "Getting started",
+      "link": { "type": "doc", "id": "getting-started/index" },
+      "items": [
+        "getting-started/requirements",
+        "getting-started/installation",
+        "getting-started/quick-start"
+      ]
+    },
+    {
+      "type": "category",
+      "label": "Concepts",
+      "link": { "type": "doc", "id": "concepts/index" },
+      "items": ["concepts/architecture"]
+    },
+    {
+      "type": "category",
+      "label": "Guides",
+      "link": { "type": "doc", "id": "guides/index" },
+      "items": ["guides/upgrade", "guides/backup-and-restore"]
+    },
+    {
+      "type": "category",
+      "label": "Reference",
+      "link": { "type": "doc", "id": "reference/index" },
+      "items": ["reference/configuration", "reference/cli"]
+    },
+    "troubleshooting"
+  ]
+}

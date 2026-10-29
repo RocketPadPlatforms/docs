@@ -1,0 +1,15 @@
+{
+  "skills": [
+    {
+      "name": "rpp-repo-docs",
+      "version": "1",
+      "files": [
+        "SKILL.md",
+        "references/structure.md",
+        "references/frontmatter.md",
+        "references/sidebars.example.json",
+        "references/docs-workflow.yml"
+      ]
+    }
+  ]
+}

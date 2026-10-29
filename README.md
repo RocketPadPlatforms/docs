@@ -71,6 +71,7 @@ plugins/version-routing/   local site plugin: start pages, redirects, assertions
 site/                      pure config helpers (plugin instances, DOCS_ONLY, broken-link policy)
 src/                       landing page, theme (brand CSS), 404/redirect handling
 tests/                     fixtures, end-to-end suite
+skills/                    OpenCode skill catalog; bump "version" in skills/index.json on every change
 .cache/                    gitignored: fetched sources
 <id>_versions.json, <id>_versioned_docs/, <id>_versioned_sidebars/, generated/   gitignored, generated
 ```
@@ -296,24 +297,9 @@ link or an MDX error fails the app's PR.
 
 ### Snippets for app repositories
 
-PR check (if it is a required check, do not add `paths:` filters, or the check never reports on
-PRs that do not touch the docs):
-
-```yaml
-# .github/workflows/docs.yml
-name: Docs
-on:
-  pull_request:
-permissions: {}
-jobs:
-  validate:
-    permissions:
-      contents: read
-    uses: RocketPadPlatforms/docs/.github/workflows/validate-app-docs.yml@main # pin a tag or SHA once stable
-    with:
-      app-id: app-a
-      docs-path: docs
-```
+PR check: copy `skills/rpp-repo-docs/references/docs-workflow.yml` to `.github/workflows/docs.yml`
+in the app repository. If it is a required check, do not add `paths:` filters, or the check never
+reports on PRs that do not touch the docs.
 
 Optional, sync immediately after a release (the portal syncs hourly anyway). Pin actions to commit
 SHAs; the one below is the version this repository uses:

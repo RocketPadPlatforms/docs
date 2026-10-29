@@ -1,0 +1,22 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:best-practices", ":pinAllExceptPeerDependencies"],
+  "packageRules": [
+    {
+      "description": "Match the 7 day minimumReleaseAge pnpm enforces in pnpm-workspace.yaml",
+      "matchUpdateTypes": ["major", "minor", "patch"],
+      "minimumReleaseAge": "7 days"
+    }
+  ],
+  "customManagers": [
+    {
+      "description": "Keep the SHA-pinned action in the README snippet in sync with the workflows",
+      "customType": "regex",
+      "managerFilePatterns": ["/^README\\.md$/"],
+      "matchStrings": [
+        "uses: (?<depName>[\\w.-]+/[\\w.-]+)@(?<currentDigest>[a-f0-9]{40}) # (?<currentValue>v\\S+)"
+      ],
+      "datasourceTemplate": "github-tags"
+    }
+  ]
+}

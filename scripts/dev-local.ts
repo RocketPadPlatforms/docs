@@ -26,6 +26,7 @@ async function main() {
   const child = spawn('docusaurus', [build ? 'build' : 'start', ...passthrough], {
     stdio: 'inherit',
     env,
+    shell: process.platform === 'win32', // the bin is docusaurus.cmd there
   });
   child.on('exit', (code) => process.exit(code ?? 1));
 }

@@ -421,6 +421,8 @@ Not implemented. Options when it is needed:
 
 - **Docusaurus 3.10.2** is pinned exactly, as is everything else; pnpm enforces a 7 day release
   cooldown (`minimumReleaseAge`). Upgrading means running the e2e suite.
+- **Renovate** (`renovate.json`) opens update PRs for npm packages, pnpm and GitHub Actions
+  (pinned to commit SHAs with a version comment) once a release is 7 days old.
 - `future.faster` is on; `future.v4.removeLegacyPostBuildHeadAttribute` is the only v4 flag, needed
   by Faster's SSG worker threads and not content-related.
 - **Experimental / internal API** — only `plugins/version-routing/docs-content.ts` knows the shape

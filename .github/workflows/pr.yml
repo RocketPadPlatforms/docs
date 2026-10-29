@@ -12,7 +12,7 @@ concurrency:
 
 jobs:
   fork-notice:
-    # Fork PRs never reach the self-hosted runner or the App secrets.
+    # Fork PRs never reach the App secrets.
     if: github.event.pull_request.head.repo.full_name != github.repository
     runs-on: ubuntu-latest
     permissions: {}
@@ -21,7 +21,7 @@ jobs:
 
   checks:
     if: github.event.pull_request.head.repo.full_name == github.repository
-    runs-on: [self-hosted, linux, x64]
+    runs-on: ubuntu-latest
     permissions:
       contents: read
     steps:
@@ -40,7 +40,7 @@ jobs:
 
   fetch:
     if: github.event.pull_request.head.repo.full_name == github.repository
-    runs-on: [self-hosted, linux, x64]
+    runs-on: ubuntu-latest
     permissions:
       contents: read
     steps:
@@ -87,7 +87,7 @@ jobs:
 
   build:
     needs: fetch
-    runs-on: [self-hosted, linux, x64]
+    runs-on: ubuntu-latest
     permissions:
       contents: read
     steps:

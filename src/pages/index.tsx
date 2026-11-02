@@ -1,6 +1,7 @@
 import Head from '@docusaurus/Head';
 import Link from '@docusaurus/Link';
 import { HtmlClassNameProvider } from '@docusaurus/theme-common';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import { usePluginData } from '@docusaurus/useGlobalData';
 import constants from '@site/constants';
 import { type AppData, type GlobalData, PLUGIN_NAME } from '@site/plugins/version-routing/types';
@@ -43,19 +44,22 @@ function AppCard({ app }: { app: AppData }): ReactNode {
 }
 
 export default function Home(): ReactNode {
+  const { siteConfig } = useDocusaurusContext();
   const apps = (usePluginData(PLUGIN_NAME) as GlobalData | undefined)?.apps ?? [];
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     name: `${TITLE} | ${constants.companyNameShort}`,
     description: constants.description,
+    url: `${siteConfig.url}/`,
+    isPartOf: { '@id': `${siteConfig.url}/#website` },
     mainEntity: {
       '@type': 'ItemList',
       itemListElement: apps.map((app, i) => ({
         '@type': 'ListItem',
         position: i + 1,
         name: app.label,
-        url: `https://docs.rpp.gmbh${app.versions.find((v) => v.isLast)?.startPage ?? '/'}`,
+        url: `${siteConfig.url}${app.versions.find((v) => v.isLast)?.startPage ?? '/'}`,
       })),
     },
   };

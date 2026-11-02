@@ -1,3 +1,9 @@
 {
-  "apps": {}
+  "apps": {
+    "base": {
+      "defaultBranch": "main",
+      "versions": [],
+      "retired": []
+    }
+  }
 }

@@ -30,8 +30,8 @@ describe('checkBuild', () => {
     mkdirSync(dirname(file), { recursive: true });
     writeFileSync(file, `<html><head>${head}</head></html>`);
   };
-  const ok = (path: string, title = 'T') =>
-    `<title>${title}</title><meta name=description content="d"><link rel=canonical href=${site}${path}>`;
+  const ok = (path: string, title = 'T', desc = 'd') =>
+    `<title>${title}</title><meta name=description content="${desc}"><link rel=canonical href=${site}${path}>`;
   const sitemap = (...paths: string[]) =>
     writeFileSync(
       join(dir, 'sitemap.xml'),
@@ -65,6 +65,13 @@ describe('checkBuild', () => {
     page('/b/', ok('/b/', 'Same'));
     sitemap('/a/', '/b/');
     expect(checkBuild(dir, site).warnings.join()).toMatch(/duplicate title "Same"/);
+  });
+
+  it('warns about duplicate descriptions', () => {
+    page('/a/', ok('/a/', 'A', 'Same'));
+    page('/b/', ok('/b/', 'B', 'Same'));
+    sitemap('/a/', '/b/');
+    expect(checkBuild(dir, site).warnings.join()).toMatch(/duplicate description "Same"/);
   });
 
   it('fails without a sitemap', () => {

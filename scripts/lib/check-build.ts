@@ -47,6 +47,7 @@ export function checkBuild(buildDir: string, siteUrl: string): BuildCheck {
     (m) => m[1],
   );
   const titles = new Map<string, string[]>();
+  const descriptions = new Map<string, string[]>();
 
   for (const url of urls) {
     const path = new URL(url).pathname;
@@ -64,9 +65,12 @@ export function checkBuild(buildDir: string, siteUrl: string): BuildCheck {
     const title = attr(html, /<title[^>]*>([^<]+)<\/title>/i);
     if (!title) errors.push(`${url}: missing <title>`);
     else titles.set(title, [...(titles.get(title) ?? []), url]);
-    if (!attr(html, /<meta[^>]*name=["']?description["']?[^>]*content=["']?([^"'>]+)/i)) {
-      errors.push(`${url}: missing meta description`);
-    }
+    const description = attr(
+      html,
+      /<meta[^>]*name=["']?description["']?[^>]*content=["']?([^"'>]+)/i,
+    );
+    if (!description) errors.push(`${url}: missing meta description`);
+    else descriptions.set(description, [...(descriptions.get(description) ?? []), url]);
     const canonical = attr(html, /<link[^>]*rel=["']?canonical["']?[^>]*href=["']?([^"'\s>]+)/i);
     if (!canonical) errors.push(`${url}: missing canonical link`);
     else if (new URL(canonical, siteUrl).href !== new URL(url).href) {
@@ -76,6 +80,13 @@ export function checkBuild(buildDir: string, siteUrl: string): BuildCheck {
   for (const [title, where] of titles) {
     if (where.length > 1) {
       warnings.push(`duplicate title "${title}": ${where.join(', ')}. Use unique titles per page.`);
+    }
+  }
+  for (const [description, where] of descriptions) {
+    if (where.length > 1) {
+      warnings.push(
+        `duplicate description "${description}": ${where.join(', ')}. Use unique descriptions per page.`,
+      );
     }
   }
   return { errors, warnings, pages: urls.length };

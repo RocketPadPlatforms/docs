@@ -179,6 +179,8 @@ const config: Config = {
       { name: 'description', content: DESCRIPTION },
       { name: 'keywords', content: constants.keywords.join(', ') },
       { property: 'og:site_name', content: SITE_NAME },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:image:alt', content: `${SITE_NAME} documentation` },
       { name: 'twitter:card', content: 'summary_large_image' },
     ],
     // Dark by default like rpp.gmbh. respectPrefersColorScheme is off on purpose: otherwise a

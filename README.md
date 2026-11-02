@@ -209,7 +209,6 @@ installation-wide; the narrowing is what keeps each token small.
    - secret `DOCS_READER_PRIVATE_KEY` (the whole `.pem`)
 7. Optional repository variables:
    - `DOCS_SYNC_AUTO_MERGE=true` — enable auto-merge on the sync PR
-   - `DOCS_DEPLOY_ENABLED=true` — allow the deploy job (see [Cutover](#cutover-from-platform-docs))
 
 Which job gets which token:
 
@@ -262,14 +261,14 @@ With "GitHub Actions" as the source no `CNAME` file is needed in the build.
 ### Cutover from `platform-docs`
 
 `docs.rpp.gmbh` is served by `RocketPadPlatforms/platform-docs` today, and a custom domain can be
-held by one repository only. The deploy job therefore stays off until you flip it:
+held by one repository only. Every push to `main` deploys, so move the domain before merging:
 
 1. Split the old content into the app repositories and add the apps to `docs-sources.json`.
 2. Fill in `legacy-redirects.json`: every old URL gets `"/<app>/<page>/"` (redirect) or `false`
    (dropped). `null` means undecided and **blocks the deploy** (`pnpm check:legacy`, run by the
    deploy build). Pull requests only warn.
 3. Remove the custom domain from `platform-docs` (Settings → Pages), set it here (above).
-4. Set the repository variable `DOCS_DEPLOY_ENABLED=true` and re-run **Build and deploy**.
+4. Merge to `main` (or re-run **Build and deploy**).
 5. Update the "Read the Docs" links on rpp.gmbh (they point at `/docs/overview` and
    `/docs/modules`) and resubmit `https://docs.rpp.gmbh/sitemap.xml` in Search Console.
 

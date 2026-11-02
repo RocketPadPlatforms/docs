@@ -2,7 +2,14 @@
   "apps": {
     "base": {
       "defaultBranch": "main",
-      "versions": [],
+      "versions": [
+        {
+          "version": "1.0.0",
+          "tag": "v1.0.0",
+          "commit": "a8b44870c6a938c59ca236b35bb14c221507a942",
+          "publishedAt": "2026-11-02T17:13:40Z"
+        }
+      ],
       "retired": []
     }
   }

@@ -4,6 +4,8 @@ const constants = {
   companyName: 'Rocket Pad Platforms GmbH',
   companyNameShort: 'Rocket Pad Platforms',
   companyWebsite: 'https://rocketpadplatforms.de',
+  description:
+    'Documentation for the Rocket Pad Platforms Kubernetes developer platform: GitOps guides, architecture and reference for every supported version.',
   keywords: ['Kubernetes', 'K8s', 'GitOps', 'Platform', 'Developer Platform'],
   // The org page, not the repo: `platform-docs` is private, so linking
   // straight at it would 404 for every logged-out reader of the public docs

@@ -11,8 +11,7 @@ import type { ReactNode } from 'react';
 
 import styles from './index.module.css';
 
-const TITLE = 'Documentation';
-const DESCRIPTION = `Documentation for ${constants.companyNameShort} products: guides, architecture and reference for every supported version.`;
+const TITLE = 'Kubernetes & GitOps Platform Docs';
 
 function AppCard({ app }: { app: AppData }): ReactNode {
   const latest = app.versions.find((v) => v.isLast) ?? app.versions[0];
@@ -49,7 +48,7 @@ export default function Home(): ReactNode {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     name: `${TITLE} | ${constants.companyNameShort}`,
-    description: DESCRIPTION,
+    description: constants.description,
     mainEntity: {
       '@type': 'ItemList',
       itemListElement: apps.map((app, i) => ({
@@ -63,7 +62,7 @@ export default function Home(): ReactNode {
 
   return (
     <HtmlClassNameProvider className="rpp-page-landing">
-      <Layout title={TITLE} description={DESCRIPTION}>
+      <Layout title={TITLE} description={constants.description}>
         <Head>
           <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
         </Head>

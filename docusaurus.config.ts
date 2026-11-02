@@ -12,7 +12,7 @@ import { buildInstances, navbarItems, parseLocal, parseOnly } from './site/insta
 
 const SITE_URL = 'https://docs.rpp.gmbh';
 const SITE_NAME = constants.companyNameShort;
-const DESCRIPTION = `Documentation for ${SITE_NAME} products: guides, architecture and reference for every supported version.`;
+const DESCRIPTION = constants.description;
 
 const only = parseOnly(process.env.DOCS_ONLY);
 const local = parseLocal(process.env.LOCAL_DOCS);

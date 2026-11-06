@@ -186,13 +186,13 @@ importers:
         version: 3.10.2(c4e917153c617a5c22b7f85c0834fb06)
       '@docusaurus/theme-mermaid':
         specifier: 3.10.2
-        version: 3.10.2(13ad50a0aac3bb0d0fa52fcc6b7b6410)
+        version: 3.10.2(18805bbe8b1fc541e9fd5dde0a2955a5)
       '@mdx-js/react':
         specifier: 3.1.1
         version: 3.1.1(@types/react@19.3.0)(react@19.3.1)
       '@mermaid-js/layout-elk':
-        specifier: 0.1.9
-        version: 0.1.9(mermaid@12.2.0)
+        specifier: 0.2.3
+        version: 0.2.3(mermaid@12.2.0)
       clsx:
         specifier: 2.1.1
         version: 2.1.1
@@ -1864,8 +1864,8 @@ packages:
       '@types/react': '>=16'
       react: '>=16'
 
-  '@mermaid-js/layout-elk@0.1.9':
-    resolution: {integrity: sha512-HuvaqFZBr6yT9PpWYockvKAZPJVd89yn/UjOYPxhzbZxlybL2v+2BjVCg7MVH6vRs1irUohb/s42HEdec1CCZw==}
+  '@mermaid-js/layout-elk@0.2.3':
+    resolution: {integrity: sha512-m46RVGfvKK1PSMdAFGDz2nksI4jusEkFxvf0lb48bYWmqLQxZpjtpruiw29MbOy9rlWJtuMf9EzG9fAF8CVZbg==}
     peerDependencies:
       mermaid: ^11.0.2
 
@@ -8741,7 +8741,7 @@ snapshots:
       - uglify-js
       - webpack-cli
 
-  '@docusaurus/theme-mermaid@3.10.2(13ad50a0aac3bb0d0fa52fcc6b7b6410)':
+  '@docusaurus/theme-mermaid@3.10.2(18805bbe8b1fc541e9fd5dde0a2955a5)':
     dependencies:
       '@docusaurus/core': 3.10.2(@docusaurus/faster@3.10.2(@docusaurus/types@3.10.2(@swc/core@1.16.18)(@swc/html@1.16.18)(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.31))(csso@5.0.5)(esbuild@0.28.2)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.31)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(supports-color@8.1.1)(svgo@3.3.5))(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.31))(csso@5.0.5)(esbuild@0.28.2)(html-minifier-terser@7.2.0)(postcss@8.5.31)(svgo@3.3.5))(@mdx-js/react@3.1.1(@types/react@19.3.0)(react@19.3.1))(@rspack/core@1.7.12)(@swc/core@1.16.18)(@swc/html@1.16.18)(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.31))(csso@5.0.5)(debug@4.4.3(supports-color@8.1.1))(esbuild@0.28.2)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.31)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(supports-color@8.1.1)(svgo@3.3.5)(typescript@6.0.3)
       '@docusaurus/module-type-aliases': 3.10.2(@swc/core@1.16.18)(@swc/html@1.16.18)(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.31))(csso@5.0.5)(esbuild@0.28.2)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.31)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(supports-color@8.1.1)(svgo@3.3.5)
@@ -8753,7 +8753,7 @@ snapshots:
       react-dom: 19.3.1(react@19.3.1)
       tslib: 2.8.1
     optionalDependencies:
-      '@mermaid-js/layout-elk': 0.1.9(mermaid@12.2.0)
+      '@mermaid-js/layout-elk': 0.2.3(mermaid@12.2.0)
     transitivePeerDependencies:
       - '@docusaurus/faster'
       - '@docusaurus/plugin-content-docs'
@@ -9290,7 +9290,7 @@ snapshots:
       '@types/react': 19.3.0
       react: 19.3.1
 
-  '@mermaid-js/layout-elk@0.1.9(mermaid@12.2.0)':
+  '@mermaid-js/layout-elk@0.2.3(mermaid@12.2.0)':
     dependencies:
       d3: 7.9.0
       elkjs: 0.9.3

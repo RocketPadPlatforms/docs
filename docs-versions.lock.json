@@ -4,6 +4,12 @@
       "defaultBranch": "main",
       "versions": [
         {
+          "version": "1.1.0",
+          "tag": "v1.1.0",
+          "commit": "e12e2a89a8a2404dca15a3838dd2515d8af9568b",
+          "publishedAt": "2026-11-06T10:32:28Z"
+        },
+        {
           "version": "1.0.0",
           "tag": "v1.0.0",
           "commit": "a8b44870c6a938c59ca236b35bb14c221507a942",

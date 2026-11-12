@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "description": "Central multi-app, multi-version documentation portal for Rocket Pad Platforms",
-  "packageManager": "pnpm@12.14.0",
+  "packageManager": "pnpm@12.18.0",
   "engines": {
     "node": ">=24"
   },

@@ -4,6 +4,42 @@
       "defaultBranch": "main",
       "versions": [
         {
+          "version": "2.0.0",
+          "tag": "v2.0.0",
+          "commit": "d3305d54d07553e10f91e28b742388a1d9829cef",
+          "publishedAt": "2026-11-23T08:28:04Z"
+        },
+        {
+          "version": "1.2.3",
+          "tag": "v1.2.3",
+          "commit": "3741e60c780c62a248554a32ba8713c09c9799d3",
+          "publishedAt": "2026-11-20T13:32:24Z"
+        },
+        {
+          "version": "1.2.2",
+          "tag": "v1.2.2",
+          "commit": "1d3730d20768a673aa70f75018b5ad9945a79b68",
+          "publishedAt": "2026-11-20T11:17:50Z"
+        },
+        {
+          "version": "1.2.1",
+          "tag": "v1.2.1",
+          "commit": "48fd60bf123f3d74efa20f485a6ca6ae48bc93b2",
+          "publishedAt": "2026-11-20T08:23:06Z"
+        },
+        {
+          "version": "1.2.0",
+          "tag": "v1.2.0",
+          "commit": "84e43d29e50f0878e708ab8f2b3a7d677ca6efd8",
+          "publishedAt": "2026-11-17T15:39:33Z"
+        },
+        {
+          "version": "1.1.0",
+          "tag": "v1.1.0",
+          "commit": "e12e2a89a8a2404dca15a3838dd2515d8af9568b",
+          "publishedAt": "2026-11-06T10:32:28Z"
+        },
+        {
           "version": "1.0.0",
           "tag": "v1.0.0",
           "commit": "a8b44870c6a938c59ca236b35bb14c221507a942",
